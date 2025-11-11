@@ -1,0 +1,106 @@
+:root {
+    --primary-orange: #ff6b35;
+    --secondary-orange: #ff9666;
+  }
+  
+  .bg-primary-orange {
+    background-color: var(--primary-orange);
+  }
+  
+  .text-primary-orange {
+    color: var(--primary-orange);
+  }
+  
+  .card {
+    transition: transform 0.2s;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .student-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .nav-link.active {
+    color: var(--primary-orange) !important;
+    font-weight: bold;
+  }
+  
+  /* Gallery specific styles */
+  .gallery-item .card-img-top {
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .btn-outline-warning {
+    color: var(--primary-orange);
+    border-color: var(--primary-orange);
+  }
+  
+  .btn-outline-warning:hover,
+  .btn-outline-warning:focus {
+    background-color: var(--primary-orange);
+    border-color: var(--primary-orange);
+    color: white;
+  }
+  
+  .btn-warning {
+    background-color: var(--primary-orange);
+    border-color: var(--primary-orange);
+    color: white;
+  }
+  
+  .btn-warning:hover {
+    background-color: var(--secondary-orange);
+    border-color: var(--secondary-orange);
+    color: white;
+  }
+  
+  /* Form controls */
+  .form-control-lg,
+  .form-select-lg {
+    padding: 1rem;
+    font-size: 1rem;
+  }
+  
+  /* Language switcher */
+  .btn-group .btn-outline-secondary.active {
+    background-color: var(--primary-orange);
+    border-color: var(--primary-orange);
+    color: white;
+  }
+  
+  /* Message styles */
+  .message {
+    position: relative;
+  }
+  
+  .message.sent {
+    background-color: #fff3e6;
+    margin-left: 1rem;
+  }
+  
+  .message.reply {
+    background-color: #e6ffe6;
+    margin-right: 1rem;
+  }
+  
+  .sticky-top {
+    z-index: 1020;
+  }
+  
+  /* Table styles */
+  .table > :not(caption) > * > * {
+    padding: 1rem 0.75rem;
+  }
+  
+  .table-hover tbody tr:hover {
+    background-color: #fff3e6;
+  }

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PTM Schedule</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="index.html">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff6b35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+          <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+          <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+        </svg>
+        <span class="fw-bold">PTM Schedule</span>
+      </a>
+      <div class="d-flex">
+        <a href="gallery.html" class="btn btn-outline-primary me-2">Gallery</a>
+        <a href="index.html" class="btn btn-outline-primary">Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container py-4">
+    <div class="text-center mb-4">
+      <h1 class="display-5">🗓️ Parent-Teacher Meetings</h1>
+      <p class="lead text-muted">Schedule or View Your PTM Appointments</p>
+    </div>
+
+    <!-- Success Alert (hidden by default) -->
+    <div class="alert alert-success alert-dismissible fade" role="alert" id="successAlert">
+      Appointment request sent successfully!
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="row g-4">
+      <!-- Upcoming PTMs Section -->
+      <div class="col-md-6">
+        <h2 class="mb-4">Upcoming PTMs</h2>
+        <div class="card border-0 shadow-sm mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Class 5B - Mathematics</h5>
+            <p class="card-text">
+              <strong>Teacher:</strong> Dr. Smith<br>
+              <strong>Date:</strong> March 15, 2025<br>
+              <span class="badge bg-warning">10:00 AM - 11:30 AM</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Class 5B - Science</h5>
+            <p class="card-text">
+              <strong>Teacher:</strong> Mrs. Johnson<br>
+              <strong>Date:</strong> March 15, 2025<br>
+              <span class="badge bg-warning">11:45 AM - 1:15 PM</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">Class 5B - English</h5>
+            <p class="card-text">
+              <strong>Teacher:</strong> Mr. Davis<br>
+              <strong>Date:</strong> March 15, 2025<br>
+              <span class="badge bg-warning">2:00 PM - 3:30 PM</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Book Appointment Section -->
+      <div class="col-md-6">
+        <h2 class="mb-4">Book PTM Appointment</h2>
+        <div class="card border-0 shadow-sm">
+          <div class="card-body">
+            <form id="ptmForm" onsubmit="handleSubmit(event)">
+              <div class="mb-3">
+                <label for="teacher" class="form-label">Select Teacher</label>
+                <select class="form-select form-control-lg" id="teacher" required>
+                  <option value="">Choose...</option>
+                  <option>Dr. Smith (Mathematics)</option>
+                  <option>Mrs. Johnson (Science)</option>
+                  <option>Mr. Davis (English)</option>
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label for="date" class="form-label">Select Date</label>
+                <input type="date" class="form-control form-control-lg" id="date" required>
+              </div>
+
+              <div class="mb-3">
+                <label for="time" class="form-label">Select Time</label>
+                <select class="form-select form-control-lg" id="time" required>
+                  <option value="">Choose...</option>
+                  <option>10:00 AM - 11:30 AM</option>
+                  <option>11:45 AM - 1:15 PM</option>
+                  <option>2:00 PM - 3:30 PM</option>
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label for="class" class="form-label">Select Class</label>
+                <select class="form-select form-control-lg" id="class" required>
+                  <option value="">Choose...</option>
+                  <option>Class 1</option>
+                  <option>Class 2</option>
+                  <option>Class 3</option>
+                  <option>Class 4</option>
+                  <option>Class 5</option>
+                  <option>Class 6</option>
+                  <option>Class 7</option>
+                  <option>Class 8</option>
+                  <option>Class 9</option>
+                  <option>Class 10</option>
+                  <option>Class 11</option>
+                  <option>Class 12</option>
+                </select>
+              </div>
+
+              <button type="submit" class="btn btn-warning btn-lg w-100">Book Appointment</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Language Switcher -->
+  <div class="container text-center py-4">
+    <div class="btn-group" role="group" aria-label="Language switcher">
+      <button type="button" class="btn btn-outline-secondary active">English</button>
+      <button type="button" class="btn btn-outline-secondary">हिंदी</button>
+      <button type="button" class="btn btn-outline-secondary">मगही</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function handleSubmit(event) {
+      event.preventDefault();
+      const alert = document.getElementById('successAlert');
+      alert.classList.add('show');
+      event.target.reset();
+    }
+  </script>
+</body>
+</html>

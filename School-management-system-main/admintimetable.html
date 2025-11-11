@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SchoolTouch - TimeTable</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+/* Custom CSS */
+:root {
+    --orange: #ff6600;
+    --orange-hover: #ff8533;
+    --blue: #3498db;
+    --green: #2ecc71;
+    --purple: #9b59b6;
+    --red: #e74c3c;
+}
+
+.text-orange { color: var(--orange) !important; }
+.text-blue { color: var(--blue) !important; }
+.text-green { color: var(--green) !important; }
+.text-purple { color: var(--purple) !important; }
+.text-red { color: var(--red) !important; }
+
+.bg-light-orange { background-color: rgba(255, 102, 0, 0.1); }
+.bg-light-blue { background-color: rgba(52, 152, 219, 0.1); }
+.bg-light-green { background-color: rgba(46, 204, 113, 0.1); }
+.bg-light-purple { background-color: rgba(155, 89, 182, 0.1); }
+
+.btn-orange {
+    background-color: var(--orange);
+    color: white;
+}
+
+.btn-orange:hover {
+    background-color: var(--orange-hover);
+    color: white;
+}
+
+/* Dashboard Stats */
+.stats-card {
+    border-radius: 15px;
+    transition: transform 0.3s;
+}
+
+.stats-card:hover {
+    transform: translateY(-5px);
+}
+
+.stats-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Sidebar */
+.wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+}
+
+#sidebar {
+    min-width: 250px;
+    max-width: 250px;
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+    height: 100vh;
+    position: fixed;
+}
+
+#sidebar.active {
+    min-width: 80px;
+    max-width: 80px;
+}
+
+#sidebar.active .sidebar-header h3 {
+    display: none;
+}
+
+#sidebar .sidebar-header {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#sidebar ul.components {
+    padding: 20px 0;
+}
+
+#sidebar ul li a {
+    padding: 10px 20px;
+    font-size: 1.1em;
+    display: block;
+    color: #333;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+#sidebar ul li a:hover {
+    background: #f8f9fa;
+    color: var(--orange);
+}
+
+#sidebar ul li.active > a {
+    color: var(--orange);
+    background: #f8f9fa;
+}
+
+#sidebar.active ul li a {
+    padding: 15px;
+    text-align: center;
+}
+
+#sidebar.active ul li a i {
+    margin-right: 0;
+    font-size: 1.3em;
+}
+
+#sidebar.active ul li a span {
+    display: none;
+}
+
+/* Main Content */
+#content {
+    width: 100%;
+    min-height: 100vh;
+    transition: all 0.3s;
+    margin-left: 250px;
+    background: #f8f9fa;
+}
+
+#sidebar.active + #content {
+    margin-left: 80px;
+}
+
+/* Table Styles */
+.table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+.table tbody tr:nth-child(odd) {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.edit-btn {
+    color: var(--orange);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.edit-btn:hover {
+    color: var(--orange-hover);
+}
+
+/* Student/Teacher Cards */
+.profile-card {
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.3s;
+}
+
+.profile-card:hover {
+    transform: translateY(-5px);
+}
+
+.profile-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #sidebar {
+        min-width: 80px;
+        max-width: 80px;
+    }
+
+    #sidebar .sidebar-header h3,
+    #sidebar ul li a span {
+        display: none;
+    }
+
+    #sidebar ul li a {
+        padding: 15px;
+        text-align: center;
+    }
+
+    #sidebar ul li a i {
+        margin-right: 0;
+        font-size: 1.3em;
+    }
+
+    #content {
+        margin-left: 80px;
+    }
+}
+</style>
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar" class="active">
+            <div class="sidebar-header">
+                <h3 class="text-orange">SchoolTouch</h3>
+                <button id="sidebarCollapse" class="btn">
+                    <i class="bi bi-list"></i>
+                </button>
+            </div>
+            <ul class="list-unstyled components">
+                <li class="active">
+                    <a href="#timeTableSection" data-bs-toggle="collapse">
+                        <i class="bi bi-calendar3"></i> TimeTable
+                    </a>
+                </li>
+                <li>
+                    <a href="#studentsSection">
+                        <i class="bi bi-people"></i> Students
+                    </a>
+                </li>
+                <li>
+                    <a href="#teachersSection">
+                        <i class="bi bi-person-video3"></i> Teachers
+                    </a>
+                </li>
+                <li>
+                    <a href="#subjectsSection">
+                        <i class="bi bi-book"></i> Subjects
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Page Content -->
+        <div id="content">
+            <!-- Top Navbar -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+                <div class="container-fluid">
+                    <h1 class="text-orange mb-0">SchoolTouch Dashboard</h1>
+                    <div class="d-flex align-items-center">
+                        <button class="btn position-relative me-3">
+                            <i class="bi bi-bell"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                3
+                            </span>
+                        </button>
+                        <div class="dropdown">
+                            <button class="btn d-flex align-items-center" type="button" data-bs-toggle="dropdown">
+                                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=48&h=48&q=80" 
+                                     alt="Admin" 
+                                     class="rounded-circle me-2" 
+                                     style="width: 32px; height: 32px;">
+                                <span class="d-none d-md-inline">Admin</span>
+                                <i class="bi bi-chevron-down ms-2"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="#">Profile</a></li>
+                                <li><a class="dropdown-item" href="#">Settings</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#">Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <div class="container-fluid p-4">
+                <!-- Dashboard Stats -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card stats-card bg-light-orange">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="stats-icon bg-orange text-white">
+                                        <i class="bi bi-people-fill"></i>
+                                    </div>
+                                    <div class="ms-3">
+                                        <h6 class="mb-0">Total Students</h6>
+                                        <h3 class="mb-0 text-orange">1,234</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stats-card bg-light-blue">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="stats-icon bg-blue text-white">
+                                        <i class="bi bi-person-video3"></i>
+                                    </div>
+                                    <div class="ms-3">
+                                        <h6 class="mb-0">Total Teachers</h6>
+                                        <h3 class="mb-0 text-blue">85</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stats-card bg-light-green">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="stats-icon bg-green text-white">
+                                        <i class="bi bi-book-fill"></i>
+                                    </div>
+                                    <div class="ms-3">
+                                        <h6 class="mb-0">Total Classes</h6>
+                                        <h3 class="mb-0 text-green">24</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stats-card bg-light-purple">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="stats-icon bg-purple text-white">
+                                        <i class="bi bi-calendar-check"></i>
+                                    </div>
+                                    <div class="ms-3">
+                                        <h6 class="mb-0">Attendance</h6>
+                                        <h3 class="mb-0 text-purple">95%</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TimeTable Section -->
+                <div id="timeTableSection" class="card mb-4">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="card-title mb-0">Class TimeTable</h4>
+                            <div class="d-flex align-items-center">
+                                <label class="me-3 fw-bold">Select Class:</label>
+                                <select id="classSelect" class="form-select" style="width: auto;">
+                                    <option value="1">Class 1</option>
+                                    <option value="2">Class 2</option>
+                                    <option value="3">Class 3</option>
+                                    <option value="4">Class 4</option>
+                                    <option value="5">Class 5</option>
+                                    <option value="6">Class 6</option>
+                                    <option value="7">Class 7</option>
+                                    <option value="8">Class 8</option>
+                                    <option value="9">Class 9</option>
+                                    <option value="10">Class 10</option>
+                                    <option value="11">Class 11</option>
+                                    <option value="12">Class 12</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Day</th>
+                                        <th>Period 1</th>
+                                        <th>Period 2</th>
+                                        <th>Period 3</th>
+                                        <th>Period 4</th>
+                                        <th>Period 5</th>
+                                        <th>Period 6</th>
+                                        <th>Period 7</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="timetableBody">
+                                    <!-- Filled by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Students Section -->
+                <div id="studentsSection" class="card mb-4">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="card-title mb-0">Students</h4>
+                            <button class="btn btn-orange">
+                                <i class="bi bi-plus-lg"></i> Add Student
+                            </button>
+                        </div>
+                        <div class="row" id="studentsContainer">
+                            <!-- Filled by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Teachers Section -->
+                <div id="teachersSection" class="card mb-4">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="card-title mb-0">Teachers</h4>
+                            <button class="btn btn-orange">
+                                <i class="bi bi-plus-lg"></i> Add Teacher
+                            </button>
+                        </div>
+                        <div class="row" id="teachersContainer">
+                            <!-- Filled by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Timetable Entry</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="editDay">
+                    <input type="hidden" id="editPeriod">
+                    <div class="mb-3">
+                        <label for="subjectInput" class="form-label">Subject:</label>
+                        <input type="text" class="form-control" id="subjectInput">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-orange" onclick="saveChanges()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const timetableData = {
+    Monday: {
+        period1: 'Mathematics',
+        period2: 'English',
+        period3: 'Science',
+        period4: 'History',
+        period5: 'Geography',
+        period6: 'Physics',
+        period7: 'Chemistry'
+    },
+    Tuesday: {
+        period1: 'Physics',
+        period2: 'Mathematics',
+        period3: 'English',
+        period4: 'Chemistry',
+        period5: 'Biology',
+        period6: 'Computer',
+        period7: 'Arts'
+    },
+    Wednesday: {
+        period1: 'English',
+        period2: 'Science',
+        period3: 'Mathematics',
+        period4: 'Geography',
+        period5: 'History',
+        period6: 'Physics',
+        period7: 'Sports'
+    },
+    Thursday: {
+        period1: 'Science',
+        period2: 'Mathematics',
+        period3: 'English',
+        period4: 'Computer',
+        period5: 'Chemistry',
+        period6: 'Biology',
+        period7: 'Music'
+    },
+    Friday: {
+        period1: 'History',
+        period2: 'Geography',
+        period3: 'Mathematics',
+        period4: 'English',
+        period5: 'Science',
+        period6: 'Arts',
+        period7: 'Sports'
+    },
+    Saturday: {
+        period1: 'Physics',
+        period2: 'Chemistry',
+        period3: 'Biology',
+        period4: 'Mathematics',
+        period5: 'English',
+        period6: 'Computer',
+        period7: 'Library'
+    }
+};
+
+// Sample data for students and teachers
+const studentsData = [
+    {
+        id: 1,
+        name: "Alice Johnson",
+        class: "10A",
+        rollNo: "1001",
+        attendance: "95%",
+        image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+    },
+    {
+        id: 2,
+        name: "Bob Smith",
+        class: "10A",
+        rollNo: "1002",
+        attendance: "92%",
+        image: "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+    },
+    {
+        id: 3,
+        name: "Carol White",
+        class: "10A",
+        rollNo: "1003",
+        attendance: "98%",
+        image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+    }
+];
+
+const teachersData = [
+    {
+        id: 1,
+        name: "Dr. Sarah ",
+        subject: "Mathematics",
+        experience: "10 years",
+        image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+    },
+    {
+        id: 2,
+        name: "Prof. malik",
+        subject: "Physics",
+        experience: "15 years",
+        image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+    },
+    {
+        id: 3,
+        name: "Ms. Emily Brown",
+        subject: "English",
+        experience: "8 years",
+        image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+    }
+];
+
+// Initialize the timetable
+function initializeTimetable() {
+    const tbody = document.getElementById('timetableBody');
+    tbody.innerHTML = '';
+
+    Object.entries(timetableData).forEach(([day, periods]) => {
+        const row = document.createElement('tr');
+        
+        // Add day column
+        const dayCell = document.createElement('td');
+        dayCell.textContent = day;
+        dayCell.className = 'fw-bold';
+        row.appendChild(dayCell);
+
+        // Add period columns
+        Object.entries(periods).forEach(([period, subject]) => {
+            const cell = document.createElement('td');
+            cell.textContent = subject;
+            cell.setAttribute('data-day', day);
+            cell.setAttribute('data-period', period);
+            row.appendChild(cell);
+        });
+
+        // Add actions column
+        const actionsCell = document.createElement('td');
+        actionsCell.innerHTML = `<button class="btn p-0" onclick="editEntry('${day}', 'period1')">
+            <i class="bi bi-pencil-square edit-btn"></i>
+        </button>`;
+        row.appendChild(actionsCell);
+
+        tbody.appendChild(row);
+    });
+}
+
+// Initialize students section
+function initializeStudents() {
+    const container = document.getElementById('studentsContainer');
+    if (!container) return;
+
+    container.innerHTML = studentsData.map(student => `
+        <div class="col-md-4 mb-4">
+            <div class="card profile-card">
+                <div class="card-body text-center">
+                    <img src="${student.image}" alt="${student.name}" class="profile-image mb-3">
+                    <h5 class="card-title mb-1">${student.name}</h5>
+                    <p class="text-muted small mb-2">Roll No: ${student.rollNo}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-light-blue text-blue">Class ${student.class}</span>
+                        <span class="badge bg-light-green text-green">Attendance: ${student.attendance}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Initialize teachers section
+function initializeTeachers() {
+    const container = document.getElementById('teachersContainer');
+    if (!container) return;
+
+    container.innerHTML = teachersData.map(teacher => `
+        <div class="col-md-4 mb-4">
+            <div class="card profile-card">
+                <div class="card-body text-center">
+                    <img src="${teacher.image}" alt="${teacher.name}" class="profile-image mb-3">
+                    <h5 class="card-title mb-1">${teacher.name}</h5>
+                    <p class="text-muted small mb-2">${teacher.subject}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-light-purple text-purple">Experience: ${teacher.experience}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Edit timetable entry
+function editEntry(day, period) {
+    const modal = new bootstrap.Modal(document.getElementById('editModal'));
+    document.getElementById('editDay').value = day;
+    document.getElementById('editPeriod').value = period;
+    document.getElementById('subjectInput').value = timetableData[day][period];
+    modal.show();
+}
+
+// Save changes
+function saveChanges() {
+    const day = document.getElementById('editDay').value;
+    const period = document.getElementById('editPeriod').value;
+    const subject = document.getElementById('subjectInput').value;
+
+    timetableData[day][period] = subject;
+    initializeTimetable();
+
+    const modal = bootstrap.Modal.getInstance(document.getElementById('editModal'));
+    modal.hide();
+}
+
+// Toggle sidebar
+document.getElementById('sidebarCollapse').addEventListener('click', () => {
+    document.getElementById('sidebar').classList.toggle('active');
+});
+
+// Initialize everything when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    initializeTimetable();
+    initializeStudents();
+    initializeTeachers();
+});
+    </script>
+</body>
+</html>

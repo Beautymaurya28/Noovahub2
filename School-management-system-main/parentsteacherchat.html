@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Parent Chat | SchoolTouch</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .navbar {
+      background-color: #ff6600;
+    }
+    .navbar-brand {
+      color: #fff !important;
+    }
+    .chat-box {
+      max-height: 400px;
+      overflow-y: auto;
+      background-color: #fff8f0;
+      border-radius: 10px;
+      padding: 1rem;
+      border: 1px solid #ffd6ad;
+    }
+    .msg {
+      margin-bottom: 1rem;
+    }
+    .msg.teacher {
+      text-align: left;
+    }
+    .msg.parent {
+      text-align: right;
+    }
+    .msg .bubble {
+      display: inline-block;
+      padding: 10px 15px;
+      border-radius: 15px;
+      max-width: 75%;
+    }
+    .teacher .bubble {
+      background-color: #eee;
+      color: #000;
+    }
+    .parent .bubble {
+      background-color: #ff6600;
+      color: white;
+    }
+    .chat-input {
+      margin-top: 1rem;
+    }
+    .send-btn {
+      background-color: #ff6600;
+      color: white;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar px-3">
+  <a class="navbar-brand fw-bold" href="#">💬 Parent-Teacher Chat</a>
+</nav>
+
+<div class="container mt-4">
+  <div class="chat-box" id="chatBox">
+    <div class="msg teacher">
+      <div class="bubble">Hello! This is Mrs. Anjali. How can I help you?</div>
+    </div>
+    <div class="msg parent">
+      <div class="bubble">Good morning, ma'am. I wanted to ask about today's homework.</div>
+    </div>
+  </div>
+
+  <div class="chat-input d-flex">
+    <input type="text" id="messageInput" class="form-control me-2" placeholder="Type your message..." />
+    <button class="btn send-btn" onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
+<script>
+  function sendMessage() {
+    const input = document.getElementById('messageInput');
+    const msg = input.value.trim();
+    if (msg === '') return;
+
+    const chatBox = document.getElementById('chatBox');
+    const msgDiv = document.createElement('div');
+    msgDiv.classList.add('msg', 'parent');
+    msgDiv.innerHTML = `<div class="bubble">${msg}</div>`;
+    chatBox.appendChild(msgDiv);
+
+    input.value = '';
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+</script>
+
+</body>
+</html>

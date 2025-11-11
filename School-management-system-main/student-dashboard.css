@@ -1,0 +1,32 @@
+:root {
+    --primary-orange: #ff6b35;
+    --secondary-orange: #ff9666;
+  }
+  
+  .bg-primary-orange {
+    background-color: var(--primary-orange);
+  }
+  
+  .text-primary-orange {
+    color: var(--primary-orange);
+  }
+  
+  .card {
+    transition: transform 0.2s;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .student-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .nav-link.active {
+    color: var(--primary-orange) !important;
+    font-weight: bold;
+  }

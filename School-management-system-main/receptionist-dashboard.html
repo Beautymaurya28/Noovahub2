@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SchoolTouch Receptionist Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .sidebar {
+            min-height: 100vh;
+            background-color: #343a40;
+        }
+        .nav-link {
+            color: #fff;
+            padding: 0.8rem 1rem;
+        }
+        .nav-link:hover {
+            background-color: #495057;
+            color: #fff;
+        }
+        .nav-link.active {
+            background-color: #ff6b00;
+        }
+        .main-content {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        .card {
+            border: none;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+        .card-header {
+            background-color: #ff6b00;
+            color: white;
+        }
+        .btn-primary {
+            background-color: #ff6b00;
+            border-color: #ff6b00;
+        }
+        .btn-primary:hover {
+            background-color: #e65c00;
+            border-color: #e65c00;
+        }
+        .status-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+        }
+        .status-pending {
+            background-color: #ffc107;
+            color: #000;
+        }
+        .status-paid {
+            background-color: #28a745;
+            color: #fff;
+        }
+        .status-overdue {
+            background-color: #dc3545;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 px-0 sidebar">
+            <div class="d-flex flex-column">
+                <div class="p-3 text-white">
+                    <h4>SchoolTouch</h4>
+                </div>
+                <nav class="nav flex-column">
+                    <a class="nav-link active" href="#dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+                    <a class="nav-link" href="#students"><i class="bi bi-people"></i> Student Lookup</a>
+                    <a class="nav-link" href="#fees"><i class="bi bi-cash"></i> Fee Summary</a>
+                    <a class="nav-link" href="#ptm"><i class="bi bi-calendar-event"></i> PTM Schedule</a>
+                    <a class="nav-link" href="#messages"><i class="bi bi-chat"></i> Messages</a>
+                    <a class="nav-link" href="#support"><i class="bi bi-question-circle"></i> Support</a>
+                    <a class="nav-link" href="#logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9 col-lg-10 px-4 py-3">
+            <!-- Top Navigation -->
+            <nav class="navbar bg-white mb-4">
+                <div class="container-fluid">
+                    <form class="d-flex w-50">
+                        <input class="form-control me-2" type="search" placeholder="Search students..." aria-label="Search">
+                    </form>
+                    <div class="dropdown">
+                        <button class="btn dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> Receptionist
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#profile">Profile</a></li>
+                            <li><a class="dropdown-item" href="#logout">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Quick Stats -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">Today's PTM</h6>
+                            <h3>12</h3>
+                            <p class="text-muted mb-0">Appointments</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">Pending Fees</h6>
+                            <h3>28</h3>
+                            <p class="text-muted mb-0">Students</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">New Messages</h6>
+                            <h3>5</h3>
+                            <p class="text-muted mb-0">Unread</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">Support Tickets</h6>
+                            <h3>3</h3>
+                            <p class="text-muted mb-0">Open</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Student Lookup Section -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Student Lookup</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <input type="search" class="form-control" placeholder="Search by name/class/phone...">
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select">
+                                <option>All Classes</option>
+                                <option>Class X</option>
+                                <option>Class IX</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Class</th>
+                                    <th>Contact</th>
+                                    <th>Fee Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>John Doe</td>
+                                    <td>X-A</td>
+                                    <td>+1234567890</td>
+                                    <td><span class="status-badge status-pending">Pending</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary">View</button>
+                                        <button class="btn btn-sm btn-outline-primary">Message</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Jane Smith</td>
+                                    <td>IX-B</td>
+                                    <td>+1234567891</td>
+                                    <td><span class="status-badge status-paid">Paid</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary">View</button>
+                                        <button class="btn btn-sm btn-outline-primary">Message</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PTM Schedule Section -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Today's PTM Schedule</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Parent Name</th>
+                                    <th>Student</th>
+                                    <th>Class</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>10:00 AM</td>
+                                    <td>Mr. Smith</td>
+                                    <td>John Smith</td>
+                                    <td>X-A</td>
+                                    <td><span class="badge bg-warning">Pending</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-success">Mark Attended</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Support Help Section -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Support Help</h5>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Issue Type</label>
+                            <select class="form-select">
+                                <option>Technical Issue</option>
+                                <option>Fee Related</option>
+                                <option>Student Related</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" rows="3" placeholder="Describe the issue..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Issue</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+<script>
+document.getElementById('sidebarToggle').addEventListener('click', function() {
+    document.getElementById('sidebar').classList.toggle('collapsed');
+});
+
+</script>
+</body>
+</html>
